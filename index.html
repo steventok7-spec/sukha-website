@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUKHA. Restaurant &amp; Bar | Pekanbaru</title>
+    <meta name="description" content="SUKHA. Restaurant &amp; Bar — a curated dining experience in Pekanbaru, Riau. Open daily 12PM – Late.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:       #111111;
+            --bg2:      #171717;
+            --bg3:      #1e1e1e;
+            --bg4:      #252525;
+            --text:     #f0ede6;
+            --text2:    #b0ac a4;
+            --muted:    #6a6860;
+            --gold:     #c9a96e;
+            --gold-dim: rgba(201,169,110,0.25);
+            --border:   rgba(240,237,230,0.09);
+            --font:     'Montserrat', sans-serif;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Grain overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23f)'/%3E%3C/svg%3E");
+            background-size: 250px 250px;
+        }
+
+        /* =============================================
+           NAVBAR
+        ============================================= */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 28px 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.5s ease, padding 0.5s ease, border-bottom 0.5s ease, backdrop-filter 0.5s ease;
+        }
+        .navbar.scrolled {
+            background: rgba(17,17,17,0.96);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 18px 56px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-logo {
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: 0.02em;
+            color: var(--text);
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: opacity 0.3s;
+        }
+        .nav-logo:hover { opacity: 0.75; }
+        .nav-logo .dot { color: var(--gold); }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 44px;
+            list-style: none;
+        }
+        .nav-links a {
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: 0.28em;
+            color: rgba(240,237,230,0.65);
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.3s;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px; left: 0;
+            width: 0; height: 1px;
+            background: var(--gold);
+            transition: width 0.35s ease;
+        }
+        .nav-links a:hover { color: var(--text); }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* Hamburger */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 6px;
+        }
+        .hamburger span {
+            display: block;
+            width: 22px;
+            height: 1.5px;
+            background: var(--text);
+            transition: all 0.35s cubic-bezier(0.76,0,0.24,1);
+            transform-origin: center;
+        }
+        .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+        /* Mobile overlay menu */
+        .mobile-menu {
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 48px;
+            transform: translateX(100%);
+            transition: transform 0.6s cubic-bezier(0.76,0,0.24,1);
+        }
+        .mobile-menu.open { transform: translateX(0); }
+        .mobile-menu a {
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: 0.2em;
+            color: var(--text);
+            text-decoration: none;
+            text-transform: uppercase;
+            opacity: 0;
+            transform: translateY(24px);
+            transition: color 0.3s, opacity 0.45s ease, transform 0.45s ease;
+        }
+        .mobile-menu.open a { opacity: 1; transform: translateY(0); }
+        .mobile-menu.open a:nth-child(1) { transition-delay: 0.12s; }
+        .mobile-menu.open a:nth-child(2) { transition-delay: 0.18s; }
+        .mobile-menu.open a:nth-child(3) { transition-delay: 0.24s; }
+        .mobile-menu.open a:nth-child(4) { transition-delay: 0.30s; }
+        .mobile-menu a:hover { color: var(--gold); }
+        .mobile-divider {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+        }
+
+        /* =============================================
+           HERO
+        ============================================= */
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 640px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('hero.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            filter: brightness(0.55);
+        }
+        /* Vignette + dark overlay for text readability */
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 100% 100% at 50% 50%, transparent 30%, rgba(0,0,0,0.55) 100%),
+                linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.4) 100%);
+        }
+        .hero-gradient-bottom {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 220px;
+            background: linear-gradient(to bottom, transparent, #111111);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+        }
+        .hero-eyebrow {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.55em;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            opacity: 0;
+            animation: fadeUp 0.9s ease 0.3s forwards;
+        }
+        .hero-title {
+            font-size: clamp(76px, 15vw, 168px);
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            line-height: 0.88;
+            text-transform: uppercase;
+            color: var(--text);
+            margin-bottom: 28px;
+            opacity: 0;
+            animation: fadeUp 0.9s ease 0.55s forwards;
+        }
+        .hero-rule {
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            margin: 0 auto 28px;
+            opacity: 0;
+            animation: growLine 0.9s ease 0.95s forwards;
+        }
+        .hero-subtitle {
+            font-size: 11.5px;
+            font-weight: 500;
+            letter-spacing: 0.48em;
+            color: rgba(240,237,230,0.5);
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeUp 0.9s ease 1.1s forwards;
+        }
+        .hero-scroll-indicator {
+            position: absolute;
+            bottom: 44px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            animation: fadeUp 0.9s ease 1.5s forwards;
+        }
+        .hero-scroll-indicator span {
+            font-size: 8.5px;
+            font-weight: 700;
+            letter-spacing: 0.45em;
+            color: rgba(240,237,230,0.3);
+            text-transform: uppercase;
+        }
+        .scroll-stem {
+            width: 1px;
+            height: 44px;
+            background: linear-gradient(to bottom, var(--gold), transparent);
+            animation: stemPulse 2.2s ease infinite;
+        }
+        @keyframes stemPulse {
+            0%,100% { opacity: 0.45; transform: scaleY(1); }
+            50%      { opacity: 1;    transform: scaleY(1.08); }
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(22px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes growLine {
+            from { opacity: 0; width: 0; }
+            to   { opacity: 1; width: 72px; }
+        }
+
+        /* =============================================
+           SECTION UTILITIES
+        ============================================= */
+        .section { padding: 110px 0; }
+        .container { max-width: 1320px; margin: 0 auto; padding: 0 56px; }
+
+        .label {
+            font-size: 9.5px;
+            font-weight: 700;
+            letter-spacing: 0.55em;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 22px;
+        }
+        .heading {
+            font-size: clamp(52px, 7.5vw, 96px);
+            font-weight: 900;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            line-height: 0.88;
+            color: var(--text);
+            margin-bottom: 22px;
+        }
+        .rule {
+            width: 56px;
+            height: 2px;
+            background: var(--gold);
+            margin-bottom: 36px;
+        }
+        .rule-center { margin-left: auto; margin-right: auto; }
+
+        .body-text {
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.12em;
+            line-height: 2.1;
+            color: rgba(176,172,164,0.85);
+            text-transform: uppercase;
+        }
+        .body-text strong {
+            display: block;
+            color: var(--text);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        /* Reveal animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        /* =============================================
+           MENU SECTION
+        ============================================= */
+        .menu-section { background: var(--bg2); }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 90px;
+            align-items: center;
+        }
+        .menu-img-wrap {
+            position: relative;
+            height: 600px;
+            overflow: hidden;
+        }
+        .menu-img-wrap::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.025) 0%, transparent 55%);
+            pointer-events: none;
+        }
+        .menu-img {
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(ellipse 55% 50% at 38% 28%, rgba(165,80,18,0.9) 0%, rgba(65,25,6,0.95) 50%, #0c0806 100%);
+            transition: transform 0.8s ease;
+        }
+        .menu-img-wrap:hover .menu-img { transform: scale(1.04); }
+
+        .btn {
+            display: inline-block;
+            font-family: var(--font);
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 15px 38px;
+            transition: all 0.35s ease;
+            cursor: pointer;
+            border: none;
+            outline: none;
+        }
+        .btn-outline {
+            color: var(--text);
+            border: 1px solid rgba(240,237,230,0.28);
+            background: transparent;
+        }
+        .btn-outline:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(201,169,110,0.05);
+        }
+        .btn-solid {
+            color: #0d0a07;
+            background: var(--gold);
+            border: 1px solid var(--gold);
+        }
+        .btn-solid:hover {
+            background: transparent;
+            color: var(--gold);
+        }
+
+        /* =============================================
+           EXPERIENCE SECTION
+        ============================================= */
+        .experience-section {
+            background: var(--bg);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .experience-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 70% at 50% 50%, rgba(201,169,110,0.04) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        /* Diagonal texture lines */
+        .experience-section::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                repeating-linear-gradient(47deg, transparent, transparent 48px, rgba(201,169,110,0.012) 48px, rgba(201,169,110,0.012) 49px),
+                repeating-linear-gradient(-47deg, transparent, transparent 48px, rgba(201,169,110,0.012) 48px, rgba(201,169,110,0.012) 49px);
+        }
+        .experience-inner {
+            position: relative;
+            z-index: 1;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+        .experience-heading {
+            font-size: clamp(44px, 6.5vw, 84px);
+            font-weight: 900;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            line-height: 0.88;
+            color: var(--text);
+            margin-bottom: 22px;
+        }
+        .experience-text {
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.18em;
+            line-height: 2.3;
+            color: rgba(176,172,164,0.7);
+            text-transform: uppercase;
+            margin-bottom: 48px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* =============================================
+           GALLERY
+        ============================================= */
+        .gallery-section { background: var(--bg2); padding-bottom: 0; }
+        .gallery-header { padding: 110px 56px 48px; }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: 210px;
+            gap: 5px;
+        }
+        .gallery-item {
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0);
+            transition: background 0.45s ease;
+            z-index: 1;
+        }
+        .gallery-item:hover::after { background: rgba(201,169,110,0.1); }
+        .gallery-face {
+            width: 100%; height: 100%;
+            transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
+        }
+        .gallery-item:hover .gallery-face { transform: scale(1.06); }
+
+        /* Layout overrides */
+        .gallery-item:nth-child(1) { grid-row: span 2; }
+        .gallery-item:nth-child(2) { grid-column: span 2; }
+        .gallery-item:nth-child(5) { grid-column: span 2; }
+        .gallery-item:nth-child(7) { grid-row: span 2; }
+
+        /* Placeholder gradients – warm food photography tones */
+        .g1 { background: radial-gradient(ellipse at 38% 32%, #8c4a16 0%, #401c07 42%, #0c0806 100%); }
+        .g2 { background: radial-gradient(ellipse at 60% 48%, #6e2535 0%, #2d0e18 52%, #0c0806 100%); }
+        .g3 { background: radial-gradient(ellipse at 48% 38%, #7d5630 0%, #341a08 58%, #0c0806 100%); }
+        .g4 { background: radial-gradient(ellipse at 44% 62%, #4c3c2a 0%, #1e150c 60%, #0c0806 100%); }
+        .g5 { background: radial-gradient(ellipse at 34% 54%, #7c3c1c 0%, #2e1208 52%, #0c0806 100%); }
+        .g6 { background: radial-gradient(ellipse at 54% 38%, #8d6635 0%, #3c2010 52%, #0c0806 100%); }
+        .g7 { background: radial-gradient(ellipse at 48% 28%, #5c1828 0%, #220c12 62%, #0c0806 100%); }
+        .g8 { background: radial-gradient(ellipse at 62% 52%, #6c4c28 0%, #2a1808 56%, #0c0806 100%); }
+
+        /* =============================================
+           INSTAGRAM STRIP
+        ============================================= */
+        .instagram-section {
+            background: var(--bg);
+            padding: 90px 0 0;
+        }
+        .insta-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 0 56px 36px;
+        }
+        .insta-icon { color: var(--gold); flex-shrink: 0; }
+        .insta-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px;
+        }
+        .insta-item {
+            aspect-ratio: 1;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+        .insta-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0);
+            transition: background 0.35s ease;
+            z-index: 1;
+        }
+        .insta-item:hover::after { background: rgba(201,169,110,0.18); }
+        .insta-face {
+            width: 100%; height: 100%;
+            transition: transform 0.6s ease;
+        }
+        .insta-item:hover .insta-face { transform: scale(1.08); }
+        .i1 { background: radial-gradient(ellipse at 50% 50%, #7c4620 0%, #2f1508 56%, #0c0806 100%); }
+        .i2 { background: radial-gradient(ellipse at 40% 60%, #5e3020 0%, #22100a 56%, #0c0806 100%); }
+        .i3 { background: radial-gradient(ellipse at 60% 40%, #8e5624 0%, #3c1a08 56%, #0c0806 100%); }
+        .i4 { background: radial-gradient(ellipse at 50% 50%, #4c2030 0%, #1c0a12 56%, #0c0806 100%); }
+        .i5 { background: radial-gradient(ellipse at 46% 54%, #6e4c30 0%, #2a1808 56%, #0c0806 100%); }
+
+        /* Behold widget styling */
+        behold-widget {
+            display: block;
+            --behold-grid-gap: 4px;
+            --behold-columns: 5;
+            --behold-border-radius: 0px;
+        }
+        /* Hide fallback once Behold widget has loaded */
+        behold-widget:not(:empty) + .insta-fallback { display: none; }
+        /* While Behold hasn't loaded yet, hide it so fallback shows */
+        behold-widget:empty { display: none; }
+
+        .insta-handle {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.25em;
+            color: rgba(176,172,164,0.7);
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .insta-handle:hover { color: var(--gold); }
+
+        /* =============================================
+           CTA SECTION
+        ============================================= */
+        .cta-section {
+            background: var(--bg3);
+            padding: 90px 0;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .cta-label {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.55em;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 28px;
+        }
+
+        /* =============================================
+           FOOTER
+        ============================================= */
+        .footer {
+            background: var(--bg2);
+            padding: 90px 0 0;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 90px;
+            margin-bottom: 70px;
+        }
+        .footer-col-heading {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.45em;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 36px;
+        }
+
+        /* Form */
+        .form-row { margin-bottom: 12px; }
+        .form-input {
+            width: 100%;
+            background: rgba(255,255,255,0.035);
+            border: 1px solid rgba(240,237,230,0.1);
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 0.12em;
+            padding: 14px 16px;
+            outline: none;
+            transition: border-color 0.3s ease, background 0.3s ease;
+            -webkit-appearance: none;
+            appearance: none;
+            border-radius: 0;
+        }
+        .form-input::placeholder {
+            color: rgba(106,104,96,0.85);
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            font-size: 10.5px;
+        }
+        .form-input:focus {
+            border-color: var(--gold);
+            background: rgba(201,169,110,0.04);
+        }
+        textarea.form-input {
+            resize: none;
+            height: 110px;
+            display: block;
+        }
+        .form-submit {
+            width: 100%;
+            margin-top: 10px;
+            background: var(--gold);
+            border: 1px solid var(--gold);
+            color: #0d0a07;
+            font-family: var(--font);
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: 0.38em;
+            text-transform: uppercase;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.35s ease;
+        }
+        .form-submit:hover {
+            background: transparent;
+            color: var(--gold);
+        }
+
+        /* Map */
+        .map-block {
+            width: 100%;
+            height: 300px;
+            background: var(--bg4);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 22px;
+            position: relative;
+            overflow: hidden;
+        }
+        .map-block::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 28px, rgba(255,255,255,0.018) 28px, rgba(255,255,255,0.018) 29px),
+                repeating-linear-gradient(90deg, transparent, transparent 28px, rgba(255,255,255,0.018) 28px, rgba(255,255,255,0.018) 29px);
+        }
+        .map-label {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+        .map-label svg { display: block; margin: 0 auto 10px; opacity: 0.3; }
+        .map-label p {
+            font-size: 9.5px;
+            font-weight: 600;
+            letter-spacing: 0.4em;
+            color: rgba(106,104,96,0.8);
+            text-transform: uppercase;
+        }
+        .address-block {
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 0.12em;
+            line-height: 2;
+            color: rgba(106,104,96,0.9);
+            text-transform: uppercase;
+        }
+        .address-block strong {
+            display: block;
+            color: rgba(176,172,164,0.75);
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        /* Footer bottom bar */
+        .footer-bottom {
+            border-top: 1px solid var(--border);
+            padding: 30px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .footer-logo {
+            font-size: 17px;
+            font-weight: 900;
+            letter-spacing: 0.02em;
+            color: var(--text);
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: opacity 0.3s;
+        }
+        .footer-logo:hover { opacity: 0.7; }
+        .footer-logo .dot { color: var(--gold); }
+        .footer-copy {
+            font-size: 9.5px;
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            color: rgba(106,104,96,0.75);
+            text-transform: uppercase;
+        }
+        .footer-socials { display: flex; gap: 18px; }
+        .footer-socials a {
+            color: rgba(106,104,96,0.8);
+            transition: color 0.3s;
+            display: block;
+        }
+        .footer-socials a:hover { color: var(--gold); }
+
+        /* Ornamental divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 0 56px;
+            margin: 80px 0 0;
+        }
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+        .divider-diamond {
+            width: 6px; height: 6px;
+            background: var(--gold);
+            transform: rotate(45deg);
+            flex-shrink: 0;
+        }
+
+        /* =============================================
+           RESPONSIVE
+        ============================================= */
+        @media (max-width: 960px) {
+            .navbar, .navbar.scrolled { padding-left: 28px; padding-right: 28px; }
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .container { padding: 0 28px; }
+            .menu-grid { grid-template-columns: 1fr; gap: 44px; }
+            .menu-img-wrap { height: 340px; order: -1; }
+            .gallery-header { padding: 80px 28px 40px; }
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-auto-rows: 220px;
+                padding: 0;
+            }
+            .gallery-item:nth-child(1) { grid-row: span 2; }
+            .gallery-item:nth-child(2) { grid-column: span 1; }
+            .gallery-item:nth-child(5) { grid-column: span 1; }
+            .gallery-item:nth-child(7) { grid-row: span 1; }
+            .insta-grid { grid-template-columns: repeat(3, 1fr); }
+            .insta-item:nth-child(4),
+            .insta-item:nth-child(5) { display: none; }
+            .insta-header { padding: 0 28px 28px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 56px; }
+            .footer-bottom {
+                flex-direction: column;
+                gap: 18px;
+                text-align: center;
+            }
+            .divider { padding: 0 28px; }
+        }
+
+        @media (max-width: 560px) {
+            .hero-title { font-size: 62px; letter-spacing: 0.05em; }
+            .heading { font-size: 44px; }
+            .experience-heading { font-size: 38px; }
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                grid-auto-rows: 260px;
+            }
+            .gallery-item:nth-child(1),
+            .gallery-item:nth-child(7) { grid-row: span 1; }
+            .gallery-item:nth-child(2),
+            .gallery-item:nth-child(5) { grid-column: span 1; }
+            .insta-grid { grid-template-columns: repeat(2, 1fr); }
+            .insta-item:nth-child(3) { display: none; }
+            .section { padding: 76px 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===================== MOBILE MENU ===================== -->
+    <nav class="mobile-menu" id="mobileMenu" aria-hidden="true">
+        <a href="#menu"         onclick="closeMobile()">Menu</a>
+        <div class="mobile-divider"></div>
+        <a href="#about"        onclick="closeMobile()">About Us</a>
+        <div class="mobile-divider"></div>
+        <a href="#gallery"      onclick="closeMobile()">Gallery</a>
+        <div class="mobile-divider"></div>
+        <a href="#reservations" onclick="closeMobile()">Reservations</a>
+    </nav>
+
+    <!-- ===================== NAVBAR ===================== -->
+    <header class="navbar" id="navbar" role="banner">
+        <a href="#" class="nav-logo">SUKHA</a>
+        <nav aria-label="Primary navigation">
+            <ul class="nav-links">
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#reservations">Reservations</a></li>
+            </ul>
+        </nav>
+        <button class="hamburger" id="hamburger" onclick="toggleMobile()" aria-label="Open menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+    </header>
+
+    <!-- ===================== HERO ===================== -->
+    <section class="hero" aria-label="Hero">
+        <div class="hero-bg" aria-hidden="true"></div>
+        <div class="hero-overlay" aria-hidden="true"></div>
+        <div class="hero-gradient-bottom" aria-hidden="true"></div>
+        <div class="hero-content">
+            <p class="hero-eyebrow">Pekanbaru, Riau, Indonesia &nbsp;·&nbsp; Est. 2021</p>
+            <h1 class="hero-title">SUKHA</h1>
+            <div class="hero-rule" aria-hidden="true"></div>
+            <p class="hero-subtitle">Restaurant &nbsp;·&nbsp; Pekanbaru</p>
+        </div>
+        <div class="hero-scroll-indicator" aria-hidden="true">
+            <span>Scroll</span>
+            <div class="scroll-stem"></div>
+        </div>
+    </section>
+
+    <!-- ===================== MENU SECTION ===================== -->
+    <section class="section menu-section" id="menu" aria-label="Menu">
+        <div class="container">
+            <div class="menu-grid">
+                <div class="reveal">
+                    <p class="label">Our Craft</p>
+                    <h2 class="heading">MENU.</h2>
+                    <div class="rule"></div>
+                    <div class="body-text">
+                        <strong>Crafted With Intention.</strong>
+                        Open Daily 12PM – Late<br><br>
+                        Every dish at Sukha is an act of devotion —<br>
+                        local ingredients sourced with care,<br>
+                        flavours built with patience,<br>
+                        served with a spirit of ease.
+                    </div>
+                    <a href="#" class="btn btn-outline" style="margin-top: 40px;">View Full Menu</a>
+                </div>
+                <div class="menu-img-wrap reveal reveal-delay-2">
+                    <div class="menu-img"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== EXPERIENCE SECTION ===================== -->
+    <section class="section experience-section" id="about" aria-label="The Experience">
+        <div class="container">
+            <div class="experience-inner">
+                <p class="label reveal">The Sukha Way</p>
+                <h2 class="experience-heading reveal reveal-delay-1">THE<br>EXPERIENCE.</h2>
+                <div class="rule rule-center reveal reveal-delay-2"></div>
+                <p class="experience-text reveal reveal-delay-2">
+                    Sukha — a Sanskrit word for ease,<br>
+                    joy, and an open heart.<br><br>
+                    We bring that spirit to every plate,<br>
+                    every pour, every evening<br>
+                    spent at our table in Pekanbaru.
+                </p>
+                <div class="btn-group reveal reveal-delay-3">
+                    <a href="#reservations" class="btn btn-solid">Reserve a Table</a>
+                    <a href="#menu" class="btn btn-outline">View Menu</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== GALLERY ===================== -->
+    <section class="gallery-section" id="gallery" aria-label="Gallery">
+        <div class="gallery-header reveal">
+            <p class="label">The Atmosphere</p>
+            <h2 class="heading" style="font-size: clamp(40px, 5.5vw, 72px);">GALLERY.</h2>
+        </div>
+        <div class="gallery-grid" role="list" aria-label="Photo gallery">
+            <div class="gallery-item" role="listitem"><div class="gallery-face g1"></div></div>
+            <div class="gallery-item" role="listitem"><div class="gallery-face g2"></div></div>
+            <div class="gallery-item" role="listitem"><div class="gallery-face g3"></div></div>
+            <div class="gallery-item" role="listitem"><div class="gallery-face g4"></div></div>
+            <div class="gallery-item" role="listitem"><div class="gallery-face g5"></div></div>
+            <div class="gallery-item" role="listitem"><div class="gallery-face g6"></div></div>
+            <div class="gallery-item" role="listitem"><div class="gallery-face g7"></div></div>
+            <div class="gallery-item" role="listitem"><div class="gallery-face g8"></div></div>
+        </div>
+    </section>
+
+    <!-- ===================== INSTAGRAM STRIP ===================== -->
+    <!-- Behold.so live Instagram feed — sign up at behold.so, connect @sukha.pku,  -->
+    <!-- then replace YOUR_FEED_ID below with the Widget ID they give you.           -->
+    <script src="https://w.behold.so/widget.js" type="module"></script>
+    <section class="instagram-section" aria-label="Instagram">
+        <div class="insta-header reveal">
+            <svg class="insta-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"/>
+            </svg>
+            <a href="https://www.instagram.com/sukha.pku/" target="_blank" rel="noopener noreferrer" class="insta-handle">@sukha.pku</a>
+        </div>
+
+        <!-- Live feed: paste your Behold Widget ID below -->
+        <behold-widget feed-id="YOUR_FEED_ID"></behold-widget>
+
+        <!-- Fallback static grid — shows until YOUR_FEED_ID is set -->
+        <div class="insta-grid insta-fallback">
+            <div class="insta-item"><a href="https://www.instagram.com/sukha.pku/" target="_blank" rel="noopener noreferrer"><div class="insta-face i1"></div></a></div>
+            <div class="insta-item"><a href="https://www.instagram.com/sukha.pku/" target="_blank" rel="noopener noreferrer"><div class="insta-face i2"></div></a></div>
+            <div class="insta-item"><a href="https://www.instagram.com/sukha.pku/" target="_blank" rel="noopener noreferrer"><div class="insta-face i3"></div></a></div>
+            <div class="insta-item"><a href="https://www.instagram.com/sukha.pku/" target="_blank" rel="noopener noreferrer"><div class="insta-face i4"></div></a></div>
+            <div class="insta-item"><a href="https://www.instagram.com/sukha.pku/" target="_blank" rel="noopener noreferrer"><div class="insta-face i5"></div></a></div>
+        </div>
+    </section>
+
+    <!-- ===================== CTA SECTION ===================== -->
+    <section class="cta-section" aria-label="Reservation call to action">
+        <p class="cta-label reveal">Ready to dine?</p>
+        <a href="#reservations" class="btn btn-outline reveal reveal-delay-1" style="font-size: 11px; padding: 18px 64px; letter-spacing: 0.42em;">
+            Reserve Your Table
+        </a>
+    </section>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer class="footer" id="reservations" aria-label="Contact and reservations">
+        <div class="container">
+            <div class="footer-grid">
+
+                <!-- Enquiry Form -->
+                <div class="reveal">
+                    <p class="footer-col-heading">Make an Enquiry</p>
+                    <form name="enquiry" onsubmit="handleSubmit(event)">
+                        <div class="form-row">
+                            <input type="text" class="form-input" name="name" placeholder="Name" required autocomplete="name">
+                        </div>
+                        <div class="form-row">
+                            <input type="email" class="form-input" name="email" placeholder="Email Address" required autocomplete="email">
+                        </div>
+                        <div class="form-row">
+                            <input type="tel" class="form-input" name="phone" placeholder="Phone / WhatsApp Number" required autocomplete="tel">
+                        </div>
+                        <div class="form-row">
+                            <input type="date" class="form-input" name="date" required>
+                        </div>
+                        <div class="form-row">
+                            <textarea class="form-input" name="message" placeholder="Message (party size, special requests…)"></textarea>
+                        </div>
+                        <button type="submit" class="form-submit">Send Enquiry</button>
+                    </form>
+                </div>
+
+                <!-- Map + Address -->
+                <div class="reveal reveal-delay-2">
+                    <p class="footer-col-heading">Find Us</p>
+                    <div class="map-block" style="padding:0; border:1px solid var(--border);">
+                        <iframe
+                            src="https://maps.google.com/maps?q=0.5032340090592587,101.43873469826086&z=17&output=embed"
+                            width="100%" height="300"
+                            style="border:0; display:block;"
+                            allowfullscreen loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"
+                            title="SUKHA location">
+                        </iframe>
+                    </div>
+                    <address class="address-block" style="font-style: normal;">
+                        <strong>Address</strong>
+                        Pekanbaru, Riau,<br>
+                        Indonesia<br><br>
+                        <strong>Hours</strong>
+                        Open Daily<br>
+                        12PM – Late
+                    </address>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <a href="#" class="footer-logo">SUKHA</a>
+                <p class="footer-copy">Copyright &copy; 2025 – SUKHA. All Rights Reserved</p>
+                <nav class="footer-socials" aria-label="Social media">
+                    <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+                            <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"/>
+                        </svg>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+                            <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"/>
+                        </svg>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* ----- Navbar scroll behaviour ----- */
+        const navbar = document.getElementById('navbar');
+        let lastY = 0;
+        window.addEventListener('scroll', () => {
+            const y = window.scrollY;
+            navbar.classList.toggle('scrolled', y > 60);
+            lastY = y;
+        }, { passive: true });
+
+        /* ----- Mobile menu ----- */
+        const hamburger  = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        function toggleMobile() {
+            const isOpen = mobileMenu.classList.toggle('open');
+            hamburger.classList.toggle('open', isOpen);
+            hamburger.setAttribute('aria-expanded', isOpen);
+            mobileMenu.setAttribute('aria-hidden', !isOpen);
+            document.body.style.overflow = isOpen ? 'hidden' : '';
+        }
+        function closeMobile() {
+            mobileMenu.classList.remove('open');
+            hamburger.classList.remove('open');
+            hamburger.setAttribute('aria-expanded', 'false');
+            mobileMenu.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        /* ----- Scroll-reveal via IntersectionObserver ----- */
+        const revealEls = document.querySelectorAll('.reveal');
+        const observer  = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    observer.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+        revealEls.forEach(el => observer.observe(el));
+
+        /* ----- Form submit placeholder ----- */
+        function handleSubmit(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('.form-submit');
+            btn.textContent = 'Enquiry Sent ✓';
+            btn.style.background = 'transparent';
+            btn.style.color = 'var(--gold)';
+            btn.style.borderColor = 'var(--gold)';
+            btn.disabled = true;
+        }
+    </script>
+
+</body>
+</html>
