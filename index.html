@@ -572,10 +572,8 @@
             --behold-columns: 5;
             --behold-border-radius: 0px;
         }
-        /* Hide fallback once Behold widget has loaded */
-        behold-widget:not(:empty) + .insta-fallback { display: none; }
-        /* While Behold hasn't loaded yet, hide it so fallback shows */
-        behold-widget:empty { display: none; }
+        /* Hide fallback once Behold has loaded */
+        behold-widget.behold--loaded + .insta-fallback { display: none; }
 
         .insta-handle {
             font-size: 12px;
@@ -948,9 +946,6 @@
     </section>
 
     <!-- ===================== INSTAGRAM STRIP ===================== -->
-    <!-- Behold.so live Instagram feed — sign up at behold.so, connect @sukha.pku,  -->
-    <!-- then replace YOUR_FEED_ID below with the Widget ID they give you.           -->
-    <script src="https://w.behold.so/widget.js" type="module"></script>
     <section class="instagram-section" aria-label="Instagram">
         <div class="insta-header reveal">
             <svg class="insta-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
@@ -961,6 +956,12 @@
 
         <!-- Live Instagram feed via Behold.so -->
         <behold-widget feed-id="KP6RF1ZfoaJlNHmQKOqQ"></behold-widget>
+        <script>
+          (() => {
+            const d=document,s=d.createElement("script");s.type="module";
+            s.src="https://w.behold.so/widget.js";d.head.append(s);
+          })();
+        </script>
 
         <!-- Fallback static grid — shows until YOUR_FEED_ID is set -->
         <div class="insta-grid insta-fallback">
