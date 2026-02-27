@@ -360,9 +360,14 @@
             gap: 90px;
             align-items: center;
         }
+        .menu-imgs-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
         .menu-img-wrap {
             position: relative;
-            height: 600px;
+            height: 295px;
             overflow: hidden;
         }
         .menu-img-wrap::after {
@@ -375,8 +380,6 @@
         .menu-img {
             width: 100%;
             height: 100%;
-            background:
-                radial-gradient(ellipse 55% 50% at 38% 28%, rgba(165,80,18,0.9) 0%, rgba(65,25,6,0.95) 50%, #0c0806 100%);
             transition: transform 0.8s ease;
         }
         .menu-img-wrap:hover .menu-img { transform: scale(1.04); }
@@ -792,7 +795,8 @@
             .hamburger { display: flex; }
             .container { padding: 0 28px; }
             .menu-grid { grid-template-columns: 1fr; gap: 44px; }
-            .menu-img-wrap { height: 340px; order: -1; }
+            .menu-imgs-wrap { order: -1; }
+            .menu-img-wrap { height: 200px; }
             .gallery-header { padding: 80px 28px 40px; }
             .gallery-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -898,8 +902,13 @@
                     </div>
                     <a href="#" class="btn btn-outline" style="margin-top: 40px;">View Full Menu</a>
                 </div>
-                <div class="menu-img-wrap reveal reveal-delay-2">
-                    <div class="menu-img"></div>
+                <div class="menu-imgs-wrap reveal reveal-delay-2">
+                    <div class="menu-img-wrap">
+                        <img src="menu1.jpg" alt="Sukha dish" class="menu-img" style="object-fit:cover;width:100%;height:100%;">
+                    </div>
+                    <div class="menu-img-wrap">
+                        <img src="men2.jpg" alt="Sukha dish" class="menu-img" style="object-fit:cover;width:100%;height:100%;">
+                    </div>
                 </div>
             </div>
         </div>
@@ -935,13 +944,12 @@
         </div>
         <div class="gallery-grid" role="list" aria-label="Photo gallery">
             <div class="gallery-item" role="listitem"><img src="photo1.jpg" alt="" class="gallery-face" style="object-fit:cover;width:100%;height:100%;"></div>
-            <div class="gallery-item" role="listitem"><div class="gallery-face g2"></div></div>
-            <div class="gallery-item" role="listitem"><div class="gallery-face g3"></div></div>
-            <div class="gallery-item" role="listitem"><div class="gallery-face g4"></div></div>
-            <div class="gallery-item" role="listitem"><div class="gallery-face g5"></div></div>
-            <div class="gallery-item" role="listitem"><div class="gallery-face g6"></div></div>
-            <div class="gallery-item" role="listitem"><div class="gallery-face g7"></div></div>
-            <div class="gallery-item" role="listitem"><div class="gallery-face g8"></div></div>
+            <div class="gallery-item" role="listitem"><img src="photo2.jpg" alt="" class="gallery-face" style="object-fit:cover;width:100%;height:100%;"></div>
+            <div class="gallery-item" role="listitem"><img src="photo3.JPG" alt="" class="gallery-face" style="object-fit:cover;width:100%;height:100%;"></div>
+            <div class="gallery-item" role="listitem"><img src="photo4.jpg" alt="" class="gallery-face" style="object-fit:cover;width:100%;height:100%;"></div>
+            <div class="gallery-item" role="listitem"><img src="photo5.jpg" alt="" class="gallery-face" style="object-fit:cover;width:100%;height:100%;"></div>
+            <div class="gallery-item" role="listitem"><img src="photo6.jpg" alt="" class="gallery-face" style="object-fit:cover;width:100%;height:100%;"></div>
+            <div class="gallery-item" role="listitem"><img src="photo7.jpg" alt="" class="gallery-face" style="object-fit:cover;width:100%;height:100%;"></div>
         </div>
     </section>
 
