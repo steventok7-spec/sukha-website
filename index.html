@@ -539,7 +539,7 @@
         .insta-icon { color: var(--gold); flex-shrink: 0; }
         .insta-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(6, 1fr);
             gap: 4px;
         }
         .insta-item {
@@ -559,6 +559,8 @@
         .insta-item:hover::after { background: rgba(201,169,110,0.18); }
         .insta-face {
             width: 100%; height: 100%;
+            object-fit: cover;
+            display: block;
             transition: transform 0.6s ease;
         }
         .insta-item:hover .insta-face { transform: scale(1.08); }
@@ -567,16 +569,6 @@
         .i3 { background: radial-gradient(ellipse at 60% 40%, #8e5624 0%, #3c1a08 56%, #0c0806 100%); }
         .i4 { background: radial-gradient(ellipse at 50% 50%, #4c2030 0%, #1c0a12 56%, #0c0806 100%); }
         .i5 { background: radial-gradient(ellipse at 46% 54%, #6e4c30 0%, #2a1808 56%, #0c0806 100%); }
-
-        /* Behold widget styling */
-        behold-widget {
-            display: block;
-            --behold-grid-gap: 4px;
-            --behold-columns: 5;
-            --behold-border-radius: 0px;
-        }
-        /* Hide fallback once Behold has loaded */
-        behold-widget.behold--loaded + .insta-fallback { display: none; }
 
         .insta-handle {
             font-size: 12px;
@@ -809,7 +801,8 @@
             .gallery-item:nth-child(7) { grid-row: span 1; }
             .insta-grid { grid-template-columns: repeat(3, 1fr); }
             .insta-item:nth-child(4),
-            .insta-item:nth-child(5) { display: none; }
+            .insta-item:nth-child(5),
+            .insta-item:nth-child(6) { display: block; }
             .insta-header { padding: 0 28px 28px; }
             .footer-grid { grid-template-columns: 1fr; gap: 56px; }
             .footer-bottom {
@@ -833,7 +826,6 @@
             .gallery-item:nth-child(2),
             .gallery-item:nth-child(5) { grid-column: span 1; }
             .insta-grid { grid-template-columns: repeat(2, 1fr); }
-            .insta-item:nth-child(3) { display: none; }
             .section { padding: 76px 0; }
         }
     </style>
@@ -962,23 +954,15 @@
             <a href="https://www.instagram.com/sukha.pku/" target="_blank" rel="noopener noreferrer" class="insta-handle">@sukha.pku</a>
         </div>
 
-        <!-- Live Instagram feed via Behold.so -->
-        <behold-widget feed-id="KP6RF1ZfoaJlNHmQKOqQ"></behold-widget>
-        <script>
-          (() => {
-            const d=document,s=d.createElement("script");s.type="module";
-            s.src="https://w.behold.so/widget.js";d.head.append(s);
-          })();
-        </script>
-
-        <!-- Fallback static grid — shows until YOUR_FEED_ID is set -->
-        <div class="insta-grid insta-fallback">
-            <div class="insta-item"><a href="https://www.instagram.com/sukha.pku/" target="_blank" rel="noopener noreferrer"><div class="insta-face i1"></div></a></div>
-            <div class="insta-item"><a href="https://www.instagram.com/sukha.pku/" target="_blank" rel="noopener noreferrer"><div class="insta-face i2"></div></a></div>
-            <div class="insta-item"><a href="https://www.instagram.com/sukha.pku/" target="_blank" rel="noopener noreferrer"><div class="insta-face i3"></div></a></div>
-            <div class="insta-item"><a href="https://www.instagram.com/sukha.pku/" target="_blank" rel="noopener noreferrer"><div class="insta-face i4"></div></a></div>
-            <div class="insta-item"><a href="https://www.instagram.com/sukha.pku/" target="_blank" rel="noopener noreferrer"><div class="insta-face i5"></div></a></div>
-        </div>
+        <!-- Static Instagram grid — 6 photos linking to @sukha.pku -->
+        <a href="https://www.instagram.com/sukha.pku/" target="_blank" rel="noopener noreferrer" class="insta-grid">
+            <div class="insta-item"><img class="insta-face" src="photo1.jpg" alt="SUKHA on Instagram" loading="lazy"></div>
+            <div class="insta-item"><img class="insta-face" src="photo2.jpg" alt="SUKHA on Instagram" loading="lazy"></div>
+            <div class="insta-item"><img class="insta-face" src="photo3.jpg" alt="SUKHA on Instagram" loading="lazy"></div>
+            <div class="insta-item"><img class="insta-face" src="photo4.jpg" alt="SUKHA on Instagram" loading="lazy"></div>
+            <div class="insta-item"><img class="insta-face" src="photo5.jpg" alt="SUKHA on Instagram" loading="lazy"></div>
+            <div class="insta-item"><img class="insta-face" src="photo6.jpg" alt="SUKHA on Instagram" loading="lazy"></div>
+        </a>
     </section>
 
     <!-- ===================== CTA SECTION ===================== -->
