@@ -706,6 +706,14 @@
             border-color: var(--gold);
             background: rgba(201,169,110,0.04);
         }
+        select.form-input {
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(0,0,0,0.35)'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 36px;
+        }
+        select.form-input option { background: #fff; color: #0d0d0d; }
         textarea.form-input {
             resize: none;
             height: 110px;
@@ -1035,26 +1043,32 @@
         <div class="container">
             <div class="footer-grid">
 
-                <!-- Enquiry Form -->
+                <!-- Reservation Form → WhatsApp -->
                 <div class="reveal">
-                    <p class="footer-col-heading">Make an Enquiry</p>
-                    <form name="enquiry" onsubmit="handleSubmit(event)">
+                    <p class="footer-col-heading">Reservations</p>
+                    <form name="reservation" onsubmit="handleSubmit(event)">
                         <div class="form-row">
-                            <input type="text" class="form-input" name="name" placeholder="Name" required autocomplete="name">
-                        </div>
-                        <div class="form-row">
-                            <input type="email" class="form-input" name="email" placeholder="Email Address" required autocomplete="email">
-                        </div>
-                        <div class="form-row">
-                            <input type="tel" class="form-input" name="phone" placeholder="Phone / WhatsApp Number" required autocomplete="tel">
+                            <input type="text" class="form-input" name="name" placeholder="Your Name" required autocomplete="name">
                         </div>
                         <div class="form-row">
                             <input type="date" class="form-input" name="date" required>
                         </div>
                         <div class="form-row">
-                            <textarea class="form-input" name="message" placeholder="Message (party size, special requests…)"></textarea>
+                            <select class="form-input" name="guests" required>
+                                <option value="" disabled selected>Number of Guests</option>
+                                <option value="1–2 guests">1–2 Guests</option>
+                                <option value="3–4 guests">3–4 Guests</option>
+                                <option value="5–8 guests">5–8 Guests</option>
+                                <option value="8+ guests">8+ Guests</option>
+                            </select>
                         </div>
-                        <button type="submit" class="form-submit">Send Enquiry</button>
+                        <div class="form-row">
+                            <textarea class="form-input" name="message" placeholder="Special requests (optional)…"></textarea>
+                        </div>
+                        <button type="submit" class="form-submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" style="vertical-align:middle;margin-right:8px;" aria-hidden="true"><path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/></svg>
+                            Reserve via WhatsApp
+                        </button>
                     </form>
                 </div>
 
@@ -1176,15 +1190,19 @@
             if (e.key === 'Escape') closeMenuModal();
         });
 
-        /* ----- Form submit placeholder ----- */
+        /* ----- Reservation → WhatsApp ----- */
         function handleSubmit(e) {
             e.preventDefault();
-            const btn = e.target.querySelector('.form-submit');
-            btn.textContent = 'Enquiry Sent ✓';
-            btn.style.background = 'transparent';
-            btn.style.color = 'var(--gold)';
-            btn.style.borderColor = 'var(--gold)';
-            btn.disabled = true;
+            const f = e.target;
+            const name    = f.name.value.trim();
+            const date    = f.date.value;
+            const guests  = f.guests.value;
+            const notes   = f.message.value.trim() || '–';
+            // Format date nicely
+            const d = new Date(date + 'T00:00:00');
+            const dateStr = d.toLocaleDateString('en-GB', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+            const msg = `Hi SUKHA! I'd like to make a reservation.\n\nName: ${name}\nDate: ${dateStr}\nGuests: ${guests}\nSpecial Requests: ${notes}\n\nLooking forward to dining with you!`;
+            window.open('https://wa.me/6285216556611?text=' + encodeURIComponent(msg), '_blank');
         }
     </script>
 
