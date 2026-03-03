@@ -651,8 +651,6 @@
             --behold-columns: 6;
             --behold-border-radius: 0px;
         }
-        /* Hide static fallback once Behold has loaded (~ not + because <script> sits between them) */
-        behold-widget.behold--loaded ~ .insta-fallback { display: none; }
 
         /* =============================================
            CTA SECTION
@@ -1050,15 +1048,6 @@
           })();
         </script>
 
-        <!-- Static fallback — shown until Behold loads -->
-        <a href="https://www.instagram.com/sukha.pku/" target="_blank" rel="noopener noreferrer" class="insta-grid insta-fallback">
-            <div class="insta-item"><img class="insta-face" src="photo1.jpg" alt="SUKHA on Instagram" loading="lazy"></div>
-            <div class="insta-item"><img class="insta-face" src="photo2.jpg" alt="SUKHA on Instagram" loading="lazy"></div>
-            <div class="insta-item"><img class="insta-face" src="photo3.jpg" alt="SUKHA on Instagram" loading="lazy"></div>
-            <div class="insta-item"><img class="insta-face" src="photo4.jpg" alt="SUKHA on Instagram" loading="lazy"></div>
-            <div class="insta-item"><img class="insta-face" src="photo5.jpg" alt="SUKHA on Instagram" loading="lazy"></div>
-            <div class="insta-item"><img class="insta-face" src="photo6.jpg" alt="SUKHA on Instagram" loading="lazy"></div>
-        </a>
     </section>
 
     <!-- ===================== CTA SECTION ===================== -->
