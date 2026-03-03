@@ -651,8 +651,8 @@
             --behold-columns: 6;
             --behold-border-radius: 0px;
         }
-        /* Hide static fallback once Behold has loaded */
-        behold-widget.behold--loaded + .insta-fallback { display: none; }
+        /* Hide static fallback once Behold has loaded (~ not + because <script> sits between them) */
+        behold-widget.behold--loaded ~ .insta-fallback { display: none; }
 
         /* =============================================
            CTA SECTION
